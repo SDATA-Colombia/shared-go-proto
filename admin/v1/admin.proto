@@ -23,7 +23,6 @@ message AdminEntity {
   string departamento = 9;
   string ciudad = 10;
   string correo = 11;
-  string contrasena = 12;
   string indicativo_telefono = 13;
   string telefono = 14;
   string indicativo_whatsApp = 15;
