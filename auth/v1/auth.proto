@@ -13,16 +13,17 @@ option go_package = "github.com/SDATA-Colombia/shared-go-proto/auth/v1";
 
 message AuthEntity {
   string id = 1;
-  string id_admin = 2;
-  string correo = 3;
+  string correo = 2;
+  string id_sujeto = 3;
+  string tipo_sujeto = 4;
 
-  bool estado = 4;
-  bool bloqueado = 5;
+  bool estado = 5;
+  bool bloqueado = 6;
 
-  google.protobuf.Timestamp login_at = 6;
-  google.protobuf.Timestamp created_at = 7;
-  google.protobuf.Timestamp updated_at = 8;
-  google.protobuf.Timestamp deleted_at = 9;
+  google.protobuf.Timestamp login_at = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+  google.protobuf.Timestamp deleted_at = 10;
 }
 
 // -------------------------------------------------------------------
@@ -38,9 +39,10 @@ message AuthEntity {
 // -------------------------------------------------------------------
 
 message CreateAuthReq {
-  string id_admin = 1;
-  string correo = 2;
-  string contrasena = 3;
+  string id_sujeto = 1;
+  string tipo_sujeto = 2;
+  string correo = 3;
+  string contrasena = 4;
 }
 
 message CreateAuthRes {
@@ -63,18 +65,79 @@ message LoginRes {
   string message = 2;
   string token_acceso = 3;
   string refrescar_token = 4;
-  string tipo_token = 6;
-  string id_admin = 7;
-  int64 expira_en = 5;
+  string tipo_token = 5;
+  string id_sujeto = 6;
+  int64 expira_en = 7;
 }
 
+// -------------------------------------------------------------------
+// Change Password
+// -------------------------------------------------------------------
+
+message ChangePasswordReq {
+  string id_sujeto = 1;
+  string contrasena_actual = 2;
+  string nueva_contrasena = 3;
+}
+
+message ChangePasswordRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Reset Password
+// -------------------------------------------------------------------
+// Para recuperación de contraseña.
+// No depende de que el usuario conozca la contraseña actual.
+// -------------------------------------------------------------------
+
+message ResetPasswordReq {
+  string restablecer_token = 1;
+  string nueva_contrasena = 2;
+}
+
+message ResetPasswordRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Refresh Token
+// -------------------------------------------------------------------
+
+message RefreshTokenReq {
+  string refrescar_token = 1;
+}
+
+message RefreshTokenRes {
+  bool success = 1;
+  string message = 2;
+  string token_acceso = 3;
+  string refrescar_token = 4;
+  string tipo_token = 5;
+  int64 expira_en = 6;
+}
+
+// -------------------------------------------------------------------
+// Logout
+// -------------------------------------------------------------------
+
+message LogoutReq {
+  string refrescar_token = 1;
+}
+
+message LogoutRes {
+  bool success = 1;
+  string message = 2;
+}
 
 // -------------------------------------------------------------------
 // GetAuth
 // -------------------------------------------------------------------
 
 message GetAuthReq {
-  string id = 1;
+  string id_sujeto = 1;
 }
 
 message GetAuthRes {
@@ -84,86 +147,77 @@ message GetAuthRes {
 }
 
 // -------------------------------------------------------------------
-// ListAuth
-// -------------------------------------------------------------------
-
-message ListAuthReq {
-  int32 page = 1;
-  int32 limit = 2;
-  string search = 3;
-}
-
-message ListAuthRes {
-  bool success = 1;
-  string message = 2;
-  repeated AuthEntity data = 3;
-  int64 total = 4;
-}
-
-// -------------------------------------------------------------------
-// UpdateAuth
-// -------------------------------------------------------------------
-
-message UpdateAuthReq {
-  string id = 1;
-  AuthEntity data = 2;
-}
-
-message UpdateAuthRes {
-  bool success = 1;
-  string message = 2;
-  AuthEntity data = 3;
-}
-
-// -------------------------------------------------------------------
-// DeleteAuth
-// -------------------------------------------------------------------
-
-message DeleteAuthReq {
-  string id = 1;
-}
-
-message DeleteAuthRes {
-  bool success = 1;
-  string message = 2;
-}
-
-// -------------------------------------------------------------------
 // Service gRPC
 // -------------------------------------------------------------------
 
 service AuthService {
 
-  rpc CreateAuth(CreateAuthReq) returns (CreateAuthRes) {
+  // ---------------------------------------------------------------
+  // Internal service-to-service operation.
+  // ms-admin -> ms-auth-admin
+  // ---------------------------------------------------------------
+
+  rpc CreateAuth(CreateAuthReq) returns (CreateAuthRes);
+
+  // ---------------------------------------------------------------
+  // Login
+  // ---------------------------------------------------------------
+
+  rpc Login(LoginReq) returns (LoginRes) {
     option (google.api.http) = {
-      post: "/api/v1/auth"
+      post: "/api/v1/auth/admin/login"
       body: "*"
     };
   }
 
-  rpc GetAuth(GetAuthReq) returns (GetAuthRes) {
-    option (google.api.http) = {
-      get: "/api/v1/auth/{id}"
-    };
-  }
+  // ---------------------------------------------------------------
+  // Change password
+  // ---------------------------------------------------------------
 
-  rpc ListAuth(ListAuthReq) returns (ListAuthRes) {
+  rpc ChangePassword(ChangePasswordReq) returns (ChangePasswordRes) {
     option (google.api.http) = {
-      get: "/api/v1/auth"
-    };
-  }
-
-  rpc UpdateAuth(UpdateAuthReq) returns (UpdateAuthRes) {
-    option (google.api.http) = {
-      put: "/api/v1/auth/{id}"
+      put: "/api/v1/auth/admin/password"
       body: "*"
     };
   }
 
-  rpc DeleteAuth(DeleteAuthReq) returns (DeleteAuthRes) {
+  // ---------------------------------------------------------------
+  // Reset password
+  // ---------------------------------------------------------------
+
+  rpc ResetPassword(ResetPasswordReq) returns (ResetPasswordRes) {
     option (google.api.http) = {
-      delete: "/api/v1/auth/{id}"
+      post: "/api/v1/auth/admin/password/reset"
+      body: "*"
     };
   }
+
+  // ---------------------------------------------------------------
+  // Refresh token
+  // ---------------------------------------------------------------
+
+  rpc RefreshToken(RefreshTokenReq) returns (RefreshTokenRes) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/admin/refresh"
+      body: "*"
+    };
+  }
+
+  // ---------------------------------------------------------------
+  // Logout
+  // ---------------------------------------------------------------
+
+  rpc Logout(LogoutReq) returns (LogoutRes) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/admin/logout"
+      body: "*"
+    };
+  }
+
+  // -------------------------------------------------------------------
+  // GetAuth
+  // -------------------------------------------------------------------
+
+  rpc GetAuth(GetAuthReq) returns (GetAuthRes);
 
 }
