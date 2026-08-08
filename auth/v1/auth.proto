@@ -13,18 +13,12 @@ option go_package = "github.com/SDATA-Colombia/shared-go-proto/auth/v1";
 
 message AuthEntity {
   string id = 1;
-  string name = 2;
-  string description = 3;
-  bool status = 4;
-  int32 age = 5;
-  int64 total = 6;
-  double price = 7;
-  repeated string tags = 8;
-  repeated int32 numbers = 9;
-  map<string, string> metadata = 10;
+  string admin_id = 2;
+  string correo = 3;
 
-  string created_by = 11;
+  bool estado = 4;
 
+  google.protobuf.Timestamp login_at = 6;
   google.protobuf.Timestamp created_at = 12;
   google.protobuf.Timestamp updated_at = 13;
   google.protobuf.Timestamp deleted_at = 14;

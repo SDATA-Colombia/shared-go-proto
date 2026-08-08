@@ -69,3 +69,5 @@ git push origin v0.1.4 (git push origin v0.1.4 --force) Se sube el tag actualiza
 | Object        |  otro `message`                                  |
 | Map           | `map<string,string>`                             |
 | ObjectId      | `string`                                         |# shared-go-proto
+
+kubectl exec -i mongodb-0 -- mongosh admins --eval "db.dropDatabase()"

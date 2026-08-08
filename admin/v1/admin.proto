@@ -33,13 +33,14 @@ message AdminEntity {
   string usuario_empresarial = 19;
   string lenguajeUsuario = 20;
   
-  bool bA = 21;
-  bool sU = 22;
-  bool collaborator = 23;
+  bool aU = 21;
+  bool bA = 22;
+  bool sU = 23;
+  bool collaborator = 24;
 
-  google.protobuf.Timestamp created_at = 24;
-  google.protobuf.Timestamp updated_at = 25;
-  google.protobuf.Timestamp deleted_at = 26;
+  google.protobuf.Timestamp created_at = 25;
+  google.protobuf.Timestamp updated_at = 26;
+  google.protobuf.Timestamp deleted_at = 27;
 }
 
 // -------------------------------------------------------------------
