@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package health.v1;
+
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/health/v1";
+
+// -------------------------------------------------------------------
+// Request / Response 
+// -------------------------------------------------------------------
+
+message PingRequest {}
+message PingResponse {
+  string status = 1;
+}
+
+// -------------------------------------------------------------------
+// Service gRPC
+// -------------------------------------------------------------------
+
+service HealthService {
+  rpc Ping(PingRequest) returns (PingResponse);
+}

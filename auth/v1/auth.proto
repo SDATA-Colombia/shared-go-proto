@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/auth/v1";
+
+// -------------------------------------------------------------------
+// Auth Entity message
+// -------------------------------------------------------------------
+
+message AuthEntity {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
+  int32 age = 5;
+  int64 total = 6;
+  double price = 7;
+  repeated string tags = 8;
+  repeated int32 numbers = 9;
+  map<string, string> metadata = 10;
+
+  string created_by = 11;
+
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+  google.protobuf.Timestamp deleted_at = 14;
+}
+
+// -------------------------------------------------------------------
+// Request / Response
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+// CreateAuth
+// -------------------------------------------------------------------
+
+message CreateAuthReq {
+  AuthEntity data = 1;
+}
+
+message CreateAuthRes {
+  bool success = 1;
+  string message = 2;
+  AuthEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// GetAuth
+// -------------------------------------------------------------------
+
+message GetAuthReq {
+  string id = 1;
+}
+
+message GetAuthRes {
+  bool success = 1;
+  string message = 2;
+  AuthEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// ListAuth
+// -------------------------------------------------------------------
+
+message ListAuthReq {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+}
+
+message ListAuthRes {
+  bool success = 1;
+  string message = 2;
+  repeated AuthEntity data = 3;
+  int64 total = 4;
+}
+
+// -------------------------------------------------------------------
+// UpdateAuth
+// -------------------------------------------------------------------
+
+message UpdateAuthReq {
+  string id = 1;
+  AuthEntity data = 2;
+}
+
+message UpdateAuthRes {
+  bool success = 1;
+  string message = 2;
+  AuthEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// DeleteAuth
+// -------------------------------------------------------------------
+
+message DeleteAuthReq {
+  string id = 1;
+}
+
+message DeleteAuthRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Service gRPC
+// -------------------------------------------------------------------
+
+service AuthService {
+
+  rpc CreateAuth(CreateAuthReq) returns (CreateAuthRes) {
+    option (google.api.http) = {
+      post: "/api/v1/auth"
+      body: "*"
+    };
+  }
+
+  rpc GetAuth(GetAuthReq) returns (GetAuthRes) {
+    option (google.api.http) = {
+      get: "/api/v1/auth/{id}"
+    };
+  }
+
+  rpc ListAuth(ListAuthReq) returns (ListAuthRes) {
+    option (google.api.http) = {
+      get: "/api/v1/auth"
+    };
+  }
+
+  rpc UpdateAuth(UpdateAuthReq) returns (UpdateAuthRes) {
+    option (google.api.http) = {
+      put: "/api/v1/auth/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteAuth(DeleteAuthReq) returns (DeleteAuthRes) {
+    option (google.api.http) = {
+      delete: "/api/v1/auth/{id}"
+    };
+  }
+
+}

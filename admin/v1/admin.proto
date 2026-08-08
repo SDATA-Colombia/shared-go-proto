@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+package admin.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/admin/v1";
+
+// -------------------------------------------------------------------
+// Admin Entity message
+// -------------------------------------------------------------------
+
+message AdminEntity {
+  string id = 1;
+  string created_by = 2;
+  string tipo_identificacion = 3;
+  string identificacion = 4;
+  string nombres = 5;
+  string apellidos = 6;
+  string direccion = 7;
+  string pais = 8;
+  string departamento = 9;
+  string ciudad = 10;
+  string correo = 11;
+  string contrasena = 12;
+  string indicativo_telefono = 13;
+  string telefono = 14;
+  string indicativo_whatsApp = 15;
+  string whatsApp = 16;
+  string mensaje_estado = 17;
+  string rol = 18;
+  string usuario_empresarial = 19;
+  string lenguajeUsuario = 20;
+  
+  bool bA = 21;
+  bool sU = 22;
+  bool collaborator = 23;
+
+  google.protobuf.Timestamp created_at = 24;
+  google.protobuf.Timestamp updated_at = 25;
+  google.protobuf.Timestamp deleted_at = 26;
+}
+
+// -------------------------------------------------------------------
+// Request / Response
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+// CreateAdmin
+// -------------------------------------------------------------------
+
+message CreateAdminReq {
+  AdminEntity data = 1;
+}
+
+message CreateAdminRes {
+  bool success = 1;
+  string message = 2;
+  AdminEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// GetAdmin
+// -------------------------------------------------------------------
+
+message GetAdminReq {
+  string id = 1;
+}
+
+message GetAdminRes {
+  bool success = 1;
+  string message = 2;
+  AdminEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// ListAdmin
+// -------------------------------------------------------------------
+
+message ListAdminReq {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+}
+
+message ListAdminRes {
+  bool success = 1;
+  string message = 2;
+  repeated AdminEntity data = 3;
+  int64 total = 4;
+}
+
+// -------------------------------------------------------------------
+// UpdateAdmin
+// -------------------------------------------------------------------
+
+message UpdateAdminReq {
+  string id = 1;
+  AdminEntity data = 2;
+}
+
+message UpdateAdminRes {
+  bool success = 1;
+  string message = 2;
+  AdminEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// DeleteAdmin
+// -------------------------------------------------------------------
+
+message DeleteAdminReq {
+  string id = 1;
+}
+
+message DeleteAdminRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Service gRPC
+// -------------------------------------------------------------------
+
+service AdminService {
+
+  rpc CreateAdmin(CreateAdminReq) returns (CreateAdminRes) {
+    option (google.api.http) = {
+      post: "/api/v1/admin"
+      body: "*"
+    };
+  }
+
+  rpc GetAdmin(GetAdminReq) returns (GetAdminRes) {
+    option (google.api.http) = {
+      get: "/api/v1/admin/{id}"
+    };
+  }
+
+  rpc ListAdmin(ListAdminReq) returns (ListAdminRes) {
+    option (google.api.http) = {
+      get: "/api/v1/admin"
+    };
+  }
+
+  rpc UpdateAdmin(UpdateAdminReq) returns (UpdateAdminRes) {
+    option (google.api.http) = {
+      put: "/api/v1/admin/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteAdmin(DeleteAdminReq) returns (DeleteAdminRes) {
+    option (google.api.http) = {
+      delete: "/api/v1/admin/{id}"
+    };
+  }
+
+}
