@@ -13,15 +13,16 @@ option go_package = "github.com/SDATA-Colombia/shared-go-proto/auth/v1";
 
 message AuthEntity {
   string id = 1;
-  string admin_id = 2;
+  string id_admin = 2;
   string correo = 3;
 
   bool estado = 4;
+  bool bloqueado = 5;
 
   google.protobuf.Timestamp login_at = 6;
-  google.protobuf.Timestamp created_at = 12;
-  google.protobuf.Timestamp updated_at = 13;
-  google.protobuf.Timestamp deleted_at = 14;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  google.protobuf.Timestamp deleted_at = 9;
 }
 
 // -------------------------------------------------------------------
@@ -31,9 +32,15 @@ message AuthEntity {
 // -------------------------------------------------------------------
 // CreateAuth
 // -------------------------------------------------------------------
+// Utilizado por ms-admin cuando se crea un administrador.
+// La contraseña solamente viaja en esta operación interna
+// y nunca forma parte de AuthEntity.
+// -------------------------------------------------------------------
 
 message CreateAuthReq {
-  AuthEntity data = 1;
+  string id_admin = 1;
+  string correo = 2;
+  string contrasena = 3;
 }
 
 message CreateAuthRes {
@@ -41,6 +48,26 @@ message CreateAuthRes {
   string message = 2;
   AuthEntity data = 3;
 }
+
+// -------------------------------------------------------------------
+// Login
+// -------------------------------------------------------------------
+
+message LoginReq {
+  string correo = 1;
+  string contrasena = 2;
+}
+
+message LoginRes {
+  bool success = 1;
+  string message = 2;
+  string token_acceso = 3;
+  string refrescar_token = 4;
+  string tipo_token = 6;
+  string id_admin = 7;
+  int64 expira_en = 5;
+}
+
 
 // -------------------------------------------------------------------
 // GetAuth

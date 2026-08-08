@@ -30,7 +30,7 @@ message AdminEntity {
   string mensaje_estado = 17;
   string rol = 18;
   string usuario_empresarial = 19;
-  string lenguajeUsuario = 20;
+  string lenguaje_usuario = 20;
   
   bool aU = 21;
   bool bA = 22;
