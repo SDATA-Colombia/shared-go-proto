@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	AuthService_CreateAuth_FullMethodName     = "/auth.v1.AuthService/CreateAuth"
+	AuthService_ListAuth_FullMethodName       = "/auth.v1.AuthService/ListAuth"
 	AuthService_Login_FullMethodName          = "/auth.v1.AuthService/Login"
 	AuthService_ChangePassword_FullMethodName = "/auth.v1.AuthService/ChangePassword"
 	AuthService_ResetPassword_FullMethodName  = "/auth.v1.AuthService/ResetPassword"
@@ -33,6 +34,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	CreateAuth(ctx context.Context, in *CreateAuthReq, opts ...grpc.CallOption) (*CreateAuthRes, error)
+	ListAuth(ctx context.Context, in *ListAuthReq, opts ...grpc.CallOption) (*ListAuthRes, error)
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginRes, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordReq, opts ...grpc.CallOption) (*ChangePasswordRes, error)
 	ResetPassword(ctx context.Context, in *ResetPasswordReq, opts ...grpc.CallOption) (*ResetPasswordRes, error)
@@ -53,6 +55,16 @@ func (c *authServiceClient) CreateAuth(ctx context.Context, in *CreateAuthReq, o
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateAuthRes)
 	err := c.cc.Invoke(ctx, AuthService_CreateAuth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) ListAuth(ctx context.Context, in *ListAuthReq, opts ...grpc.CallOption) (*ListAuthRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAuthRes)
+	err := c.cc.Invoke(ctx, AuthService_ListAuth_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +136,7 @@ func (c *authServiceClient) GetAuth(ctx context.Context, in *GetAuthReq, opts ..
 // for forward compatibility.
 type AuthServiceServer interface {
 	CreateAuth(context.Context, *CreateAuthReq) (*CreateAuthRes, error)
+	ListAuth(context.Context, *ListAuthReq) (*ListAuthRes, error)
 	Login(context.Context, *LoginReq) (*LoginRes, error)
 	ChangePassword(context.Context, *ChangePasswordReq) (*ChangePasswordRes, error)
 	ResetPassword(context.Context, *ResetPasswordReq) (*ResetPasswordRes, error)
@@ -142,6 +155,9 @@ type UnimplementedAuthServiceServer struct{}
 
 func (UnimplementedAuthServiceServer) CreateAuth(context.Context, *CreateAuthReq) (*CreateAuthRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateAuth not implemented")
+}
+func (UnimplementedAuthServiceServer) ListAuth(context.Context, *ListAuthReq) (*ListAuthRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAuth not implemented")
 }
 func (UnimplementedAuthServiceServer) Login(context.Context, *LoginReq) (*LoginRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method Login not implemented")
@@ -196,6 +212,24 @@ func _AuthService_CreateAuth_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).CreateAuth(ctx, req.(*CreateAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_ListAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).ListAuth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_ListAuth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).ListAuth(ctx, req.(*ListAuthReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -318,6 +352,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateAuth",
 			Handler:    _AuthService_CreateAuth_Handler,
+		},
+		{
+			MethodName: "ListAuth",
+			Handler:    _AuthService_ListAuth_Handler,
 		},
 		{
 			MethodName: "Login",

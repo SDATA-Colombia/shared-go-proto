@@ -52,6 +52,23 @@ message CreateAuthRes {
 }
 
 // -------------------------------------------------------------------
+// ListAuth
+// -------------------------------------------------------------------
+
+message ListAuthReq {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+}
+
+message ListAuthRes {
+  bool success = 1;
+  string message = 2;
+  repeated AuthEntity data = 3;
+  int64 total = 4;
+}
+
+// -------------------------------------------------------------------
 // Login
 // -------------------------------------------------------------------
 
@@ -158,6 +175,8 @@ service AuthService {
   // ---------------------------------------------------------------
 
   rpc CreateAuth(CreateAuthReq) returns (CreateAuthRes);
+
+  rpc ListAuth(ListAuthReq) returns (ListAuthRes);
 
   // ---------------------------------------------------------------
   // Login
