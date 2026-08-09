@@ -176,7 +176,11 @@ service AuthService {
 
   rpc CreateAuth(CreateAuthReq) returns (CreateAuthRes);
 
-  rpc ListAuth(ListAuthReq) returns (ListAuthRes);
+  rpc ListAuth(ListAuthReq) returns (ListAuthRes) {
+    option (google.api.http) = {
+      get: "/api/v1/auth/admin"
+    };
+  }
 
   // ---------------------------------------------------------------
   // Login
