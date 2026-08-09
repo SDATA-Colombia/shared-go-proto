@@ -23,23 +23,23 @@ message AdminEntity {
   string departamento = 9;
   string ciudad = 10;
   string correo = 11;
-  string indicativo_telefono = 13;
-  string telefono = 14;
-  string indicativo_whatsApp = 15;
-  string whatsApp = 16;
-  string mensaje_estado = 17;
-  string rol = 18;
-  string usuario_empresarial = 19;
-  string lenguaje_usuario = 20;
+  string indicativo_telefono = 12;
+  string telefono = 13;
+  string indicativo_whatsApp = 14;
+  string whatsApp = 15;
+  string mensaje_estado = 16;
+  string rol = 17;
+  string usuario_empresarial = 18;
+  string lenguaje_usuario = 19;
   
-  bool aU = 21;
-  bool bA = 22;
-  bool sU = 23;
-  bool collaborator = 24;
+  bool aU = 20;
+  bool bA = 21;
+  bool sU = 22;
+  bool collaborator = 23;
 
-  google.protobuf.Timestamp created_at = 25;
-  google.protobuf.Timestamp updated_at = 26;
-  google.protobuf.Timestamp deleted_at = 27;
+  google.protobuf.Timestamp created_at = 24;
+  google.protobuf.Timestamp updated_at = 25;
+  google.protobuf.Timestamp deleted_at = 26;
 }
 
 // -------------------------------------------------------------------
@@ -52,6 +52,7 @@ message AdminEntity {
 
 message CreateAdminReq {
   AdminEntity data = 1;
+  string contrasena = 2;
 }
 
 message CreateAdminRes {
