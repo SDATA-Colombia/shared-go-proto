@@ -80,8 +80,8 @@ message GetAdminRes {
 // -------------------------------------------------------------------
 
 message ListAdminReq {
-  int64 page = 1;
-  int64 limit = 2;
+  int32 page = 1;
+  int32 limit = 2;
   string search = 3;
 }
 
