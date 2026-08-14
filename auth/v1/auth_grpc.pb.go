@@ -19,14 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_CreateAuth_FullMethodName     = "/auth.v1.AuthService/CreateAuth"
-	AuthService_ListAuth_FullMethodName       = "/auth.v1.AuthService/ListAuth"
-	AuthService_Login_FullMethodName          = "/auth.v1.AuthService/Login"
-	AuthService_ChangePassword_FullMethodName = "/auth.v1.AuthService/ChangePassword"
-	AuthService_ResetPassword_FullMethodName  = "/auth.v1.AuthService/ResetPassword"
-	AuthService_RefreshToken_FullMethodName   = "/auth.v1.AuthService/RefreshToken"
-	AuthService_Logout_FullMethodName         = "/auth.v1.AuthService/Logout"
-	AuthService_GetAuth_FullMethodName        = "/auth.v1.AuthService/GetAuth"
+	AuthService_CreateAuth_FullMethodName         = "/auth.v1.AuthService/CreateAuth"
+	AuthService_GetAuth_FullMethodName            = "/auth.v1.AuthService/GetAuth"
+	AuthService_DeleteAuthIdSujeto_FullMethodName = "/auth.v1.AuthService/DeleteAuthIdSujeto"
+	AuthService_ListAuth_FullMethodName           = "/auth.v1.AuthService/ListAuth"
+	AuthService_Login_FullMethodName              = "/auth.v1.AuthService/Login"
+	AuthService_ChangePassword_FullMethodName     = "/auth.v1.AuthService/ChangePassword"
+	AuthService_ResetPassword_FullMethodName      = "/auth.v1.AuthService/ResetPassword"
+	AuthService_RefreshToken_FullMethodName       = "/auth.v1.AuthService/RefreshToken"
+	AuthService_Logout_FullMethodName             = "/auth.v1.AuthService/Logout"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -34,13 +35,14 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	CreateAuth(ctx context.Context, in *CreateAuthReq, opts ...grpc.CallOption) (*CreateAuthRes, error)
+	GetAuth(ctx context.Context, in *GetAuthReq, opts ...grpc.CallOption) (*GetAuthRes, error)
+	DeleteAuthIdSujeto(ctx context.Context, in *DeleteAuthIdSujetoReq, opts ...grpc.CallOption) (*DeleteAuthIdSujetoRes, error)
 	ListAuth(ctx context.Context, in *ListAuthReq, opts ...grpc.CallOption) (*ListAuthRes, error)
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginRes, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordReq, opts ...grpc.CallOption) (*ChangePasswordRes, error)
 	ResetPassword(ctx context.Context, in *ResetPasswordReq, opts ...grpc.CallOption) (*ResetPasswordRes, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenReq, opts ...grpc.CallOption) (*RefreshTokenRes, error)
 	Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutRes, error)
-	GetAuth(ctx context.Context, in *GetAuthReq, opts ...grpc.CallOption) (*GetAuthRes, error)
 }
 
 type authServiceClient struct {
@@ -55,6 +57,26 @@ func (c *authServiceClient) CreateAuth(ctx context.Context, in *CreateAuthReq, o
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateAuthRes)
 	err := c.cc.Invoke(ctx, AuthService_CreateAuth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetAuth(ctx context.Context, in *GetAuthReq, opts ...grpc.CallOption) (*GetAuthRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAuthRes)
+	err := c.cc.Invoke(ctx, AuthService_GetAuth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) DeleteAuthIdSujeto(ctx context.Context, in *DeleteAuthIdSujetoReq, opts ...grpc.CallOption) (*DeleteAuthIdSujetoRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteAuthIdSujetoRes)
+	err := c.cc.Invoke(ctx, AuthService_DeleteAuthIdSujeto_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -121,28 +143,19 @@ func (c *authServiceClient) Logout(ctx context.Context, in *LogoutReq, opts ...g
 	return out, nil
 }
 
-func (c *authServiceClient) GetAuth(ctx context.Context, in *GetAuthReq, opts ...grpc.CallOption) (*GetAuthRes, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetAuthRes)
-	err := c.cc.Invoke(ctx, AuthService_GetAuth_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
 type AuthServiceServer interface {
 	CreateAuth(context.Context, *CreateAuthReq) (*CreateAuthRes, error)
+	GetAuth(context.Context, *GetAuthReq) (*GetAuthRes, error)
+	DeleteAuthIdSujeto(context.Context, *DeleteAuthIdSujetoReq) (*DeleteAuthIdSujetoRes, error)
 	ListAuth(context.Context, *ListAuthReq) (*ListAuthRes, error)
 	Login(context.Context, *LoginReq) (*LoginRes, error)
 	ChangePassword(context.Context, *ChangePasswordReq) (*ChangePasswordRes, error)
 	ResetPassword(context.Context, *ResetPasswordReq) (*ResetPasswordRes, error)
 	RefreshToken(context.Context, *RefreshTokenReq) (*RefreshTokenRes, error)
 	Logout(context.Context, *LogoutReq) (*LogoutRes, error)
-	GetAuth(context.Context, *GetAuthReq) (*GetAuthRes, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -155,6 +168,12 @@ type UnimplementedAuthServiceServer struct{}
 
 func (UnimplementedAuthServiceServer) CreateAuth(context.Context, *CreateAuthReq) (*CreateAuthRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateAuth not implemented")
+}
+func (UnimplementedAuthServiceServer) GetAuth(context.Context, *GetAuthReq) (*GetAuthRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAuth not implemented")
+}
+func (UnimplementedAuthServiceServer) DeleteAuthIdSujeto(context.Context, *DeleteAuthIdSujetoReq) (*DeleteAuthIdSujetoRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteAuthIdSujeto not implemented")
 }
 func (UnimplementedAuthServiceServer) ListAuth(context.Context, *ListAuthReq) (*ListAuthRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAuth not implemented")
@@ -173,9 +192,6 @@ func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *RefreshToke
 }
 func (UnimplementedAuthServiceServer) Logout(context.Context, *LogoutReq) (*LogoutRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method Logout not implemented")
-}
-func (UnimplementedAuthServiceServer) GetAuth(context.Context, *GetAuthReq) (*GetAuthRes, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAuth not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -212,6 +228,42 @@ func _AuthService_CreateAuth_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).CreateAuth(ctx, req.(*CreateAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetAuth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetAuth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetAuth(ctx, req.(*GetAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_DeleteAuthIdSujeto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAuthIdSujetoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).DeleteAuthIdSujeto(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_DeleteAuthIdSujeto_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).DeleteAuthIdSujeto(ctx, req.(*DeleteAuthIdSujetoReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -324,24 +376,6 @@ func _AuthService_Logout_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_GetAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAuthReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServiceServer).GetAuth(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthService_GetAuth_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetAuth(ctx, req.(*GetAuthReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -352,6 +386,14 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateAuth",
 			Handler:    _AuthService_CreateAuth_Handler,
+		},
+		{
+			MethodName: "GetAuth",
+			Handler:    _AuthService_GetAuth_Handler,
+		},
+		{
+			MethodName: "DeleteAuthIdSujeto",
+			Handler:    _AuthService_DeleteAuthIdSujeto_Handler,
 		},
 		{
 			MethodName: "ListAuth",
@@ -376,10 +418,6 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Logout",
 			Handler:    _AuthService_Logout_Handler,
-		},
-		{
-			MethodName: "GetAuth",
-			Handler:    _AuthService_GetAuth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

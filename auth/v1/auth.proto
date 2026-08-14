@@ -52,6 +52,33 @@ message CreateAuthRes {
 }
 
 // -------------------------------------------------------------------
+// GetAuth
+// -------------------------------------------------------------------
+
+message GetAuthReq {
+  string id_sujeto = 1;
+}
+
+message GetAuthRes {
+  bool success = 1;
+  string message = 2;
+  AuthEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// DeleteAuthIdSujeto
+// -------------------------------------------------------------------
+
+message DeleteAuthIdSujetoReq {
+  string id_sujeto = 1;
+}
+
+message DeleteAuthIdSujetoRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
 // ListAuth
 // -------------------------------------------------------------------
 
@@ -150,20 +177,6 @@ message LogoutRes {
 }
 
 // -------------------------------------------------------------------
-// GetAuth
-// -------------------------------------------------------------------
-
-message GetAuthReq {
-  string id_sujeto = 1;
-}
-
-message GetAuthRes {
-  bool success = 1;
-  string message = 2;
-  AuthEntity data = 3;
-}
-
-// -------------------------------------------------------------------
 // Service gRPC
 // -------------------------------------------------------------------
 
@@ -175,6 +188,10 @@ service AuthService {
   // ---------------------------------------------------------------
 
   rpc CreateAuth(CreateAuthReq) returns (CreateAuthRes);
+
+  rpc GetAuth(GetAuthReq) returns (GetAuthRes);
+
+  rpc DeleteAuthIdSujeto(DeleteAuthIdSujetoReq) returns (DeleteAuthIdSujetoRes);
 
   rpc ListAuth(ListAuthReq) returns (ListAuthRes) {
     option (google.api.http) = {
@@ -236,11 +253,5 @@ service AuthService {
       body: "*"
     };
   }
-
-  // -------------------------------------------------------------------
-  // GetAuth
-  // -------------------------------------------------------------------
-
-  rpc GetAuth(GetAuthReq) returns (GetAuthRes);
 
 }
