@@ -51,9 +51,9 @@ git commit -m "Add base proto"
 
 # git tag v0.1.0 
 # IR CAMBIANDO 
-git tag v0.1.16  (git tag -f v0.1.16) Forza al tag para apuntar al commit actual
+git tag v0.1.17  (git tag -f v0.1.17) Forza al tag para apuntar al commit actual
 git push origin main
-git push origin v0.1.4 (git push origin v0.1.16 --force) Se sube el tag actualizado obligando al remoto a sobrescribirlo
+git push origin v0.1.4 (git push origin v0.1.17 --force) Se sube el tag actualizado obligando al remoto a sobrescribirlo
 # git push origin v0.1.0
 
 # Tabla de equivalencias: MongoDB <-> Protobuf
