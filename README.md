@@ -41,7 +41,7 @@ protoc \
   --go_opt=paths=source_relative \
   --go-grpc_out=. \
   --go-grpc_opt=paths=source_relative \
-  auth/v1/auth.proto
+  admin/v1/admin.proto
 
 go mod tidy
 

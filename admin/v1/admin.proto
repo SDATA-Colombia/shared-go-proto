@@ -69,6 +69,9 @@ message GetAdminReq {
   string id = 1;
 }
 
+// Vacío, no necesitamos pedir nada, todo viene en el Token
+message GetAdminMeReq {}
+
 message GetAdminRes {
   bool success = 1;
   string message = 2;
@@ -136,6 +139,12 @@ service AdminService {
   rpc GetAdmin(GetAdminReq) returns (GetAdminRes) {
     option (google.api.http) = {
       get: "/api/v1/admin/{id}"
+    };
+  }
+
+  rpc GetAdminMe(GetAdminMeReq) returns (GetAdminRes) {
+    option (google.api.http) = {
+      get: "/api/v1/admin/me"
     };
   }
 
