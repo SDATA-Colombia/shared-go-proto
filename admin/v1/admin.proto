@@ -69,7 +69,6 @@ message GetAdminReq {
   string id = 1;
 }
 
-// Vacío, no necesitamos pedir nada, todo viene en el Token
 message GetAdminMeReq {}
 
 message GetAdminRes {
