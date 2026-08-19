@@ -5,7 +5,7 @@ package company.v1;
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/OSCARstacku/shared-go-proto/company/v1";
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/company/v1";
 
 // -------------------------------------------------------------------
 // Company Entity message
