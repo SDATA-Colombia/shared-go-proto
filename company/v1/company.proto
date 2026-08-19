@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package company.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/OSCARstacku/shared-go-proto/company/v1";
+
+// -------------------------------------------------------------------
+// Company Entity message
+// -------------------------------------------------------------------
+
+message CompanyEntity {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
+  int32 age = 5;
+  int64 total = 6;
+  double price = 7;
+  repeated string tags = 8;
+  repeated int32 numbers = 9;
+  map<string, string> metadata = 10;
+
+  string created_by = 11;
+
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+  google.protobuf.Timestamp deleted_at = 14;
+}
+
+// -------------------------------------------------------------------
+// Request / Response
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+// CreateCompany
+// -------------------------------------------------------------------
+
+message CreateCompanyReq {
+  CompanyEntity data = 1;
+}
+
+message CreateCompanyRes {
+  bool success = 1;
+  string message = 2;
+  CompanyEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// GetCompany
+// -------------------------------------------------------------------
+
+message GetCompanyReq {
+  string id = 1;
+}
+
+message GetCompanyRes {
+  bool success = 1;
+  string message = 2;
+  CompanyEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// ListCompany
+// -------------------------------------------------------------------
+
+message ListCompanyReq {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+}
+
+message ListCompanyRes {
+  bool success = 1;
+  string message = 2;
+  repeated CompanyEntity data = 3;
+  int64 total = 4;
+}
+
+// -------------------------------------------------------------------
+// UpdateCompany
+// -------------------------------------------------------------------
+
+message UpdateCompanyReq {
+  string id = 1;
+  CompanyEntity data = 2;
+}
+
+message UpdateCompanyRes {
+  bool success = 1;
+  string message = 2;
+  CompanyEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// DeleteCompany
+// -------------------------------------------------------------------
+
+message DeleteCompanyReq {
+  string id = 1;
+}
+
+message DeleteCompanyRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Service gRPC
+// -------------------------------------------------------------------
+
+service CompanyService {
+
+  rpc CreateCompany(CreateCompanyReq) returns (CreateCompanyRes) {
+    option (google.api.http) = {
+      post: "/api/v1/company"
+      body: "*"
+    };
+  }
+
+  rpc GetCompany(GetCompanyReq) returns (GetCompanyRes) {
+    option (google.api.http) = {
+      get: "/api/v1/company/{id}"
+    };
+  }
+
+  rpc ListCompany(ListCompanyReq) returns (ListCompanyRes) {
+    option (google.api.http) = {
+      get: "/api/v1/company"
+    };
+  }
+
+  rpc UpdateCompany(UpdateCompanyReq) returns (UpdateCompanyRes) {
+    option (google.api.http) = {
+      put: "/api/v1/company/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteCompany(DeleteCompanyReq) returns (DeleteCompanyRes) {
+    option (google.api.http) = {
+      delete: "/api/v1/company/{id}"
+    };
+  }
+
+}
