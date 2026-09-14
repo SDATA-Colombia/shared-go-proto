@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package plan.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/OSCARstacku/shared-go-proto/plan/v1";
+
+// -------------------------------------------------------------------
+// Plan Entity message
+// -------------------------------------------------------------------
+
+message PlanEntity {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
+  int32 age = 5;
+  int64 total = 6;
+  double price = 7;
+  repeated string tags = 8;
+  repeated int32 numbers = 9;
+  map<string, string> metadata = 10;
+
+  string created_by = 11;
+
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+  google.protobuf.Timestamp deleted_at = 14;
+}
+
+// -------------------------------------------------------------------
+// Request / Response
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+// CreatePlan
+// -------------------------------------------------------------------
+
+message CreatePlanReq {
+  PlanEntity data = 1;
+}
+
+message CreatePlanRes {
+  bool success = 1;
+  string message = 2;
+  PlanEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// GetPlan
+// -------------------------------------------------------------------
+
+message GetPlanReq {
+  string id = 1;
+}
+
+message GetPlanRes {
+  bool success = 1;
+  string message = 2;
+  PlanEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// ListPlan
+// -------------------------------------------------------------------
+
+message ListPlanReq {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+}
+
+message ListPlanRes {
+  bool success = 1;
+  string message = 2;
+  repeated PlanEntity data = 3;
+  int64 total = 4;
+}
+
+// -------------------------------------------------------------------
+// UpdatePlan
+// -------------------------------------------------------------------
+
+message UpdatePlanReq {
+  string id = 1;
+  PlanEntity data = 2;
+}
+
+message UpdatePlanRes {
+  bool success = 1;
+  string message = 2;
+  PlanEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// DeletePlan
+// -------------------------------------------------------------------
+
+message DeletePlanReq {
+  string id = 1;
+}
+
+message DeletePlanRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Service gRPC
+// -------------------------------------------------------------------
+
+service PlanService {
+
+  rpc CreatePlan(CreatePlanReq) returns (CreatePlanRes) {
+    option (google.api.http) = {
+      post: "/api/v1/plan"
+      body: "*"
+    };
+  }
+
+  rpc GetPlan(GetPlanReq) returns (GetPlanRes) {
+    option (google.api.http) = {
+      get: "/api/v1/plan/{id}"
+    };
+  }
+
+  rpc ListPlan(ListPlanReq) returns (ListPlanRes) {
+    option (google.api.http) = {
+      get: "/api/v1/plan"
+    };
+  }
+
+  rpc UpdatePlan(UpdatePlanReq) returns (UpdatePlanRes) {
+    option (google.api.http) = {
+      put: "/api/v1/plan/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeletePlan(DeletePlanReq) returns (DeletePlanRes) {
+    option (google.api.http) = {
+      delete: "/api/v1/plan/{id}"
+    };
+  }
+
+}
