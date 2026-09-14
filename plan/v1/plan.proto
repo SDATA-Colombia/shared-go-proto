@@ -5,7 +5,7 @@ package plan.v1;
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/OSCARstacku/shared-go-proto/plan/v1";
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/plan/v1";
 
 // -------------------------------------------------------------------
 // Plan Entity message
