@@ -137,6 +137,7 @@ message DeletePlanRes {
 
 message DeleteFeaturePlanReq {
   string id = 1;
+  string plan_id = 2;
 }
 
 message DeleteFeaturePlanRes {
@@ -165,7 +166,7 @@ service PlanService {
 
   rpc GetPlanCompany(GetPlanCompanyReq) returns (GetPlanCompanyRes) {
     option (google.api.http) = {
-      get: "/api/v1/plan/company/{id}"
+      get: "/api/v1/plan/company/{plan_id_company}"
     };
   }
 
@@ -191,7 +192,7 @@ service PlanService {
 
   rpc DeleteFeaturePlan(DeleteFeaturePlanReq) returns (DeleteFeaturePlanRes) {
     option (google.api.http) = {
-      delete: "/api/v1/plan/{id}/{idPlan}"
+      delete: "/api/v1/plan/{id}/{plan_id}"
     };
   }
 
