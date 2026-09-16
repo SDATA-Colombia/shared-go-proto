@@ -19,11 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PlanService_CreatePlan_FullMethodName = "/plan.v1.PlanService/CreatePlan"
-	PlanService_GetPlan_FullMethodName    = "/plan.v1.PlanService/GetPlan"
-	PlanService_ListPlan_FullMethodName   = "/plan.v1.PlanService/ListPlan"
-	PlanService_UpdatePlan_FullMethodName = "/plan.v1.PlanService/UpdatePlan"
-	PlanService_DeletePlan_FullMethodName = "/plan.v1.PlanService/DeletePlan"
+	PlanService_CreatePlan_FullMethodName        = "/plan.v1.PlanService/CreatePlan"
+	PlanService_GetPlan_FullMethodName           = "/plan.v1.PlanService/GetPlan"
+	PlanService_GetPlanCompany_FullMethodName    = "/plan.v1.PlanService/GetPlanCompany"
+	PlanService_ListPlan_FullMethodName          = "/plan.v1.PlanService/ListPlan"
+	PlanService_UpdatePlan_FullMethodName        = "/plan.v1.PlanService/UpdatePlan"
+	PlanService_DeletePlan_FullMethodName        = "/plan.v1.PlanService/DeletePlan"
+	PlanService_DeleteFeaturePlan_FullMethodName = "/plan.v1.PlanService/DeleteFeaturePlan"
 )
 
 // PlanServiceClient is the client API for PlanService service.
@@ -32,9 +34,11 @@ const (
 type PlanServiceClient interface {
 	CreatePlan(ctx context.Context, in *CreatePlanReq, opts ...grpc.CallOption) (*CreatePlanRes, error)
 	GetPlan(ctx context.Context, in *GetPlanReq, opts ...grpc.CallOption) (*GetPlanRes, error)
+	GetPlanCompany(ctx context.Context, in *GetPlanCompanyReq, opts ...grpc.CallOption) (*GetPlanCompanyRes, error)
 	ListPlan(ctx context.Context, in *ListPlanReq, opts ...grpc.CallOption) (*ListPlanRes, error)
 	UpdatePlan(ctx context.Context, in *UpdatePlanReq, opts ...grpc.CallOption) (*UpdatePlanRes, error)
 	DeletePlan(ctx context.Context, in *DeletePlanReq, opts ...grpc.CallOption) (*DeletePlanRes, error)
+	DeleteFeaturePlan(ctx context.Context, in *DeleteFeaturePlanReq, opts ...grpc.CallOption) (*DeleteFeaturePlanRes, error)
 }
 
 type planServiceClient struct {
@@ -59,6 +63,16 @@ func (c *planServiceClient) GetPlan(ctx context.Context, in *GetPlanReq, opts ..
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetPlanRes)
 	err := c.cc.Invoke(ctx, PlanService_GetPlan_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *planServiceClient) GetPlanCompany(ctx context.Context, in *GetPlanCompanyReq, opts ...grpc.CallOption) (*GetPlanCompanyRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPlanCompanyRes)
+	err := c.cc.Invoke(ctx, PlanService_GetPlanCompany_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -95,15 +109,27 @@ func (c *planServiceClient) DeletePlan(ctx context.Context, in *DeletePlanReq, o
 	return out, nil
 }
 
+func (c *planServiceClient) DeleteFeaturePlan(ctx context.Context, in *DeleteFeaturePlanReq, opts ...grpc.CallOption) (*DeleteFeaturePlanRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteFeaturePlanRes)
+	err := c.cc.Invoke(ctx, PlanService_DeleteFeaturePlan_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlanServiceServer is the server API for PlanService service.
 // All implementations must embed UnimplementedPlanServiceServer
 // for forward compatibility.
 type PlanServiceServer interface {
 	CreatePlan(context.Context, *CreatePlanReq) (*CreatePlanRes, error)
 	GetPlan(context.Context, *GetPlanReq) (*GetPlanRes, error)
+	GetPlanCompany(context.Context, *GetPlanCompanyReq) (*GetPlanCompanyRes, error)
 	ListPlan(context.Context, *ListPlanReq) (*ListPlanRes, error)
 	UpdatePlan(context.Context, *UpdatePlanReq) (*UpdatePlanRes, error)
 	DeletePlan(context.Context, *DeletePlanReq) (*DeletePlanRes, error)
+	DeleteFeaturePlan(context.Context, *DeleteFeaturePlanReq) (*DeleteFeaturePlanRes, error)
 	mustEmbedUnimplementedPlanServiceServer()
 }
 
@@ -120,6 +146,9 @@ func (UnimplementedPlanServiceServer) CreatePlan(context.Context, *CreatePlanReq
 func (UnimplementedPlanServiceServer) GetPlan(context.Context, *GetPlanReq) (*GetPlanRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPlan not implemented")
 }
+func (UnimplementedPlanServiceServer) GetPlanCompany(context.Context, *GetPlanCompanyReq) (*GetPlanCompanyRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPlanCompany not implemented")
+}
 func (UnimplementedPlanServiceServer) ListPlan(context.Context, *ListPlanReq) (*ListPlanRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListPlan not implemented")
 }
@@ -128,6 +157,9 @@ func (UnimplementedPlanServiceServer) UpdatePlan(context.Context, *UpdatePlanReq
 }
 func (UnimplementedPlanServiceServer) DeletePlan(context.Context, *DeletePlanReq) (*DeletePlanRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeletePlan not implemented")
+}
+func (UnimplementedPlanServiceServer) DeleteFeaturePlan(context.Context, *DeleteFeaturePlanReq) (*DeleteFeaturePlanRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteFeaturePlan not implemented")
 }
 func (UnimplementedPlanServiceServer) mustEmbedUnimplementedPlanServiceServer() {}
 func (UnimplementedPlanServiceServer) testEmbeddedByValue()                     {}
@@ -186,6 +218,24 @@ func _PlanService_GetPlan_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlanService_GetPlanCompany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPlanCompanyReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlanServiceServer).GetPlanCompany(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlanService_GetPlanCompany_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlanServiceServer).GetPlanCompany(ctx, req.(*GetPlanCompanyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PlanService_ListPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListPlanReq)
 	if err := dec(in); err != nil {
@@ -240,6 +290,24 @@ func _PlanService_DeletePlan_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlanService_DeleteFeaturePlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFeaturePlanReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlanServiceServer).DeleteFeaturePlan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlanService_DeleteFeaturePlan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlanServiceServer).DeleteFeaturePlan(ctx, req.(*DeleteFeaturePlanReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlanService_ServiceDesc is the grpc.ServiceDesc for PlanService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -256,6 +324,10 @@ var PlanService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PlanService_GetPlan_Handler,
 		},
 		{
+			MethodName: "GetPlanCompany",
+			Handler:    _PlanService_GetPlanCompany_Handler,
+		},
+		{
 			MethodName: "ListPlan",
 			Handler:    _PlanService_ListPlan_Handler,
 		},
@@ -266,6 +338,10 @@ var PlanService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeletePlan",
 			Handler:    _PlanService_DeletePlan_Handler,
+		},
+		{
+			MethodName: "DeleteFeaturePlan",
+			Handler:    _PlanService_DeleteFeaturePlan_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

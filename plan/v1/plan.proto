@@ -13,21 +13,31 @@ option go_package = "github.com/SDATA-Colombia/shared-go-proto/plan/v1";
 
 message PlanEntity {
   string id = 1;
-  string name = 2;
-  string description = 3;
-  bool status = 4;
-  int32 age = 5;
-  int64 total = 6;
-  double price = 7;
-  repeated string tags = 8;
-  repeated int32 numbers = 9;
-  map<string, string> metadata = 10;
+  string plan_id_company = 2;
+  string plan_accent_color = 3;
+  string plan_accent_text_color = 4;
+  string plan_title = 5;
+  string plan_subtitle = 6;
+  string plan_description_tinymce = 7;
+  string plan_type = 8;
+  string plan_currency_price = 9;
+  string plan_menu = 10;
+  string plan_description_items = 11;
+  
+  int32 plan_days = 12;
+  int32 plan_offices = 13;
+  int32 plan_users = 14;
+  int32 plan_total_sales = 15;
+  
+  double plan_price = 16;
+  
+  bool plan_featured = 17;
+  bool plan_custom = 18;
+  bool active_plan = 19;
 
-  string created_by = 11;
-
-  google.protobuf.Timestamp created_at = 12;
-  google.protobuf.Timestamp updated_at = 13;
-  google.protobuf.Timestamp deleted_at = 14;
+  google.protobuf.Timestamp created_at = 20;
+  google.protobuf.Timestamp updated_at = 21;
+  google.protobuf.Timestamp deleted_at = 22;
 }
 
 // -------------------------------------------------------------------
@@ -57,6 +67,20 @@ message GetPlanReq {
 }
 
 message GetPlanRes {
+  bool success = 1;
+  string message = 2;
+  PlanEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// GetPlanCompany
+// -------------------------------------------------------------------
+
+message GetPlanCompanyReq {
+  string plan_id_company = 1;
+}
+
+message GetPlanCompanyRes {
   bool success = 1;
   string message = 2;
   PlanEntity data = 3;
@@ -108,6 +132,19 @@ message DeletePlanRes {
 }
 
 // -------------------------------------------------------------------
+// DeleteFeaturePlan
+// -------------------------------------------------------------------
+
+message DeleteFeaturePlanReq {
+  string id = 1;
+}
+
+message DeleteFeaturePlanRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
 // Service gRPC
 // -------------------------------------------------------------------
 
@@ -126,6 +163,13 @@ service PlanService {
     };
   }
 
+  rpc GetPlanCompany(GetPlanCompanyReq) returns (GetPlanCompanyRes) {
+    option (google.api.http) = {
+      get: "/api/v1/plan/company/{id}"
+    };
+  }
+
+
   rpc ListPlan(ListPlanReq) returns (ListPlanRes) {
     option (google.api.http) = {
       get: "/api/v1/plan"
@@ -142,6 +186,12 @@ service PlanService {
   rpc DeletePlan(DeletePlanReq) returns (DeletePlanRes) {
     option (google.api.http) = {
       delete: "/api/v1/plan/{id}"
+    };
+  }
+
+  rpc DeleteFeaturePlan(DeleteFeaturePlanReq) returns (DeleteFeaturePlanRes) {
+    option (google.api.http) = {
+      delete: "/api/v1/plan/{id}/{idPlan}"
     };
   }
 
