@@ -173,7 +173,7 @@ service PlanService {
 
   rpc ListPlan(ListPlanReq) returns (ListPlanRes) {
     option (google.api.http) = {
-      get: "/api/v1/plan"
+      get: "/api/v1/plans"
     };
   }
 
