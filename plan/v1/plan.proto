@@ -136,7 +136,7 @@ message DeletePlanRes {
 // -------------------------------------------------------------------
 
 message DeleteFeaturePlanReq {
-  string id = 1;
+  int32 id = 1;
   string plan_id = 2;
 }
 
