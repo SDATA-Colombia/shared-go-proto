@@ -143,6 +143,7 @@ message DeleteFeaturePlanReq {
 message DeleteFeaturePlanRes {
   bool success = 1;
   string message = 2;
+  PlanEntity data = 3;
 }
 
 // -------------------------------------------------------------------
