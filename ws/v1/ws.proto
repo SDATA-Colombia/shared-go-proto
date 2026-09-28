@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package ws.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/ws/v1";
+
+// -------------------------------------------------------------------
+// Ws Entity message
+// -------------------------------------------------------------------
+
+message WsEntity {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
+  int32 age = 5;
+  int64 total = 6;
+  double price = 7;
+  repeated string tags = 8;
+  repeated int32 numbers = 9;
+  map<string, string> metadata = 10;
+
+  string created_by = 11;
+
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+  google.protobuf.Timestamp deleted_at = 14;
+}
+
+// -------------------------------------------------------------------
+// Request / Response
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+// CreateWs
+// -------------------------------------------------------------------
+
+message CreateWsReq {
+  WsEntity data = 1;
+}
+
+message CreateWsRes {
+  bool success = 1;
+  string message = 2;
+  WsEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// GetWs
+// -------------------------------------------------------------------
+
+message GetWsReq {
+  string id = 1;
+}
+
+message GetWsRes {
+  bool success = 1;
+  string message = 2;
+  WsEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// ListWs
+// -------------------------------------------------------------------
+
+message ListWsReq {
+  int32 page = 1;
+  int32 limit = 2;
+  string search = 3;
+}
+
+message ListWsRes {
+  bool success = 1;
+  string message = 2;
+  repeated WsEntity data = 3;
+  int64 total = 4;
+}
+
+// -------------------------------------------------------------------
+// UpdateWs
+// -------------------------------------------------------------------
+
+message UpdateWsReq {
+  string id = 1;
+  WsEntity data = 2;
+}
+
+message UpdateWsRes {
+  bool success = 1;
+  string message = 2;
+  WsEntity data = 3;
+}
+
+// -------------------------------------------------------------------
+// DeleteWs
+// -------------------------------------------------------------------
+
+message DeleteWsReq {
+  string id = 1;
+}
+
+message DeleteWsRes {
+  bool success = 1;
+  string message = 2;
+}
+
+// -------------------------------------------------------------------
+// Service gRPC
+// -------------------------------------------------------------------
+
+service WsService {
+
+  rpc CreateWs(CreateWsReq) returns (CreateWsRes) {
+    option (google.api.http) = {
+      post: "/api/v1/ws"
+      body: "*"
+    };
+  }
+
+  rpc GetWs(GetWsReq) returns (GetWsRes) {
+    option (google.api.http) = {
+      get: "/api/v1/ws/{id}"
+    };
+  }
+
+  rpc ListWs(ListWsReq) returns (ListWsRes) {
+    option (google.api.http) = {
+      get: "/api/v1/ws"
+    };
+  }
+
+  rpc UpdateWs(UpdateWsReq) returns (UpdateWsRes) {
+    option (google.api.http) = {
+      put: "/api/v1/ws/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteWs(DeleteWsReq) returns (DeleteWsRes) {
+    option (google.api.http) = {
+      delete: "/api/v1/ws/{id}"
+    };
+  }
+
+}
