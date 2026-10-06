@@ -1,17 +1,17 @@
 syntax = "proto3";
 
-package ws.v1;
+package centrifugo.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/SDATA-Colombia/shared-go-proto/ws/v1";
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/centrifugo/v1";
 
 // -------------------------------------------------------------------
-// Ws Entity message
+// Centrifugo Entity message
 // -------------------------------------------------------------------
 
-message WsEntity {
+message CentrifugoEntity {
   string id = 1;
   string name = 2;
   string description = 3;
@@ -35,74 +35,74 @@ message WsEntity {
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
-// CreateWs
+// CreateCentrifugo
 // -------------------------------------------------------------------
 
-message CreateWsReq {
-  WsEntity data = 1;
+message CreateCentrifugoReq {
+  CentrifugoEntity data = 1;
 }
 
-message CreateWsRes {
+message CreateCentrifugoRes {
   bool success = 1;
   string message = 2;
-  WsEntity data = 3;
+  CentrifugoEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// GetWs
+// GetCentrifugo
 // -------------------------------------------------------------------
 
-message GetWsReq {
+message GetCentrifugoReq {
   string id = 1;
 }
 
-message GetWsRes {
+message GetCentrifugoRes {
   bool success = 1;
   string message = 2;
-  WsEntity data = 3;
+  CentrifugoEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// ListWs
+// ListCentrifugo
 // -------------------------------------------------------------------
 
-message ListWsReq {
+message ListCentrifugoReq {
   int32 page = 1;
   int32 limit = 2;
   string search = 3;
 }
 
-message ListWsRes {
+message ListCentrifugoRes {
   bool success = 1;
   string message = 2;
-  repeated WsEntity data = 3;
+  repeated CentrifugoEntity data = 3;
   int64 total = 4;
 }
 
 // -------------------------------------------------------------------
-// UpdateWs
+// UpdateCentrifugo
 // -------------------------------------------------------------------
 
-message UpdateWsReq {
+message UpdateCentrifugoReq {
   string id = 1;
-  WsEntity data = 2;
+  CentrifugoEntity data = 2;
 }
 
-message UpdateWsRes {
+message UpdateCentrifugoRes {
   bool success = 1;
   string message = 2;
-  WsEntity data = 3;
+  CentrifugoEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// DeleteWs
+// DeleteCentrifugo
 // -------------------------------------------------------------------
 
-message DeleteWsReq {
+message DeleteCentrifugoReq {
   string id = 1;
 }
 
-message DeleteWsRes {
+message DeleteCentrifugoRes {
   bool success = 1;
   string message = 2;
 }
@@ -111,37 +111,37 @@ message DeleteWsRes {
 // Service gRPC
 // -------------------------------------------------------------------
 
-service WsService {
+service CentrifugoService {
 
-  rpc CreateWs(CreateWsReq) returns (CreateWsRes) {
+  rpc CreateCentrifugo(CreateCentrifugoReq) returns (CreateCentrifugoRes) {
     option (google.api.http) = {
-      post: "/api/v1/ws"
+      post: "/api/v1/centrifugo"
       body: "*"
     };
   }
 
-  rpc GetWs(GetWsReq) returns (GetWsRes) {
+  rpc GetCentrifugo(GetCentrifugoReq) returns (GetCentrifugoRes) {
     option (google.api.http) = {
-      get: "/api/v1/ws/{id}"
+      get: "/api/v1/centrifugo/{id}"
     };
   }
 
-  rpc ListWs(ListWsReq) returns (ListWsRes) {
+  rpc ListCentrifugo(ListCentrifugoReq) returns (ListCentrifugoRes) {
     option (google.api.http) = {
-      get: "/api/v1/ws"
+      get: "/api/v1/centrifugo"
     };
   }
 
-  rpc UpdateWs(UpdateWsReq) returns (UpdateWsRes) {
+  rpc UpdateCentrifugo(UpdateCentrifugoReq) returns (UpdateCentrifugoRes) {
     option (google.api.http) = {
-      put: "/api/v1/ws/{id}"
+      put: "/api/v1/centrifugo/{id}"
       body: "*"
     };
   }
 
-  rpc DeleteWs(DeleteWsReq) returns (DeleteWsRes) {
+  rpc DeleteCentrifugo(DeleteCentrifugoReq) returns (DeleteCentrifugoRes) {
     option (google.api.http) = {
-      delete: "/api/v1/ws/{id}"
+      delete: "/api/v1/centrifugo/{id}"
     };
   }
 
