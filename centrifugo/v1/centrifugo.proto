@@ -1,17 +1,17 @@
 syntax = "proto3";
 
-package centrifugodf.v1;
+package centrifugo.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/SDATA-Colombia/shared-go-proto/centrifugodf/v1";
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/centrifugo/v1";
 
 // -------------------------------------------------------------------
-// Centrifugodf Entity message
+// Centrifugo Entity message
 // -------------------------------------------------------------------
 
-message CentrifugodfEntity {
+message CentrifugoEntity {
   string id = 1;
   string name = 2;
   string description = 3;
@@ -35,74 +35,74 @@ message CentrifugodfEntity {
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
-// CreateCentrifugodf
+// CreateCentrifugo
 // -------------------------------------------------------------------
 
-message CreateCentrifugodfReq {
-  CentrifugodfEntity data = 1;
+message CreateCentrifugoReq {
+  CentrifugoEntity data = 1;
 }
 
-message CreateCentrifugodfRes {
+message CreateCentrifugoRes {
   bool success = 1;
   string message = 2;
-  CentrifugodfEntity data = 3;
+  CentrifugoEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// GetCentrifugodf
+// GetCentrifugo
 // -------------------------------------------------------------------
 
-message GetCentrifugodfReq {
+message GetCentrifugoReq {
   string id = 1;
 }
 
-message GetCentrifugodfRes {
+message GetCentrifugoRes {
   bool success = 1;
   string message = 2;
-  CentrifugodfEntity data = 3;
+  CentrifugoEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// ListCentrifugodf
+// ListCentrifugo
 // -------------------------------------------------------------------
 
-message ListCentrifugodfReq {
+message ListCentrifugoReq {
   int32 page = 1;
   int32 limit = 2;
   string search = 3;
 }
 
-message ListCentrifugodfRes {
+message ListCentrifugoRes {
   bool success = 1;
   string message = 2;
-  repeated CentrifugodfEntity data = 3;
+  repeated CentrifugoEntity data = 3;
   int64 total = 4;
 }
 
 // -------------------------------------------------------------------
-// UpdateCentrifugodf
+// UpdateCentrifugo
 // -------------------------------------------------------------------
 
-message UpdateCentrifugodfReq {
+message UpdateCentrifugoReq {
   string id = 1;
-  CentrifugodfEntity data = 2;
+  CentrifugoEntity data = 2;
 }
 
-message UpdateCentrifugodfRes {
+message UpdateCentrifugoRes {
   bool success = 1;
   string message = 2;
-  CentrifugodfEntity data = 3;
+  CentrifugoEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// DeleteCentrifugodf
+// DeleteCentrifugo
 // -------------------------------------------------------------------
 
-message DeleteCentrifugodfReq {
+message DeleteCentrifugoReq {
   string id = 1;
 }
 
-message DeleteCentrifugodfRes {
+message DeleteCentrifugoRes {
   bool success = 1;
   string message = 2;
 }
@@ -111,37 +111,37 @@ message DeleteCentrifugodfRes {
 // Service gRPC
 // -------------------------------------------------------------------
 
-service CentrifugodfService {
+service CentrifugoService {
 
-  rpc CreateCentrifugodf(CreateCentrifugodfReq) returns (CreateCentrifugodfRes) {
+  rpc CreateCentrifugo(CreateCentrifugoReq) returns (CreateCentrifugoRes) {
     option (google.api.http) = {
-      post: "/api/v1/centrifugodf"
+      post: "/api/v1/centrifugo"
       body: "*"
     };
   }
 
-  rpc GetCentrifugodf(GetCentrifugodfReq) returns (GetCentrifugodfRes) {
+  rpc GetCentrifugo(GetCentrifugoReq) returns (GetCentrifugoRes) {
     option (google.api.http) = {
-      get: "/api/v1/centrifugodf/{id}"
+      get: "/api/v1/centrifugo/{id}"
     };
   }
 
-  rpc ListCentrifugodf(ListCentrifugodfReq) returns (ListCentrifugodfRes) {
+  rpc ListCentrifugo(ListCentrifugoReq) returns (ListCentrifugoRes) {
     option (google.api.http) = {
-      get: "/api/v1/centrifugodf"
+      get: "/api/v1/centrifugo"
     };
   }
 
-  rpc UpdateCentrifugodf(UpdateCentrifugodfReq) returns (UpdateCentrifugodfRes) {
+  rpc UpdateCentrifugo(UpdateCentrifugoReq) returns (UpdateCentrifugoRes) {
     option (google.api.http) = {
-      put: "/api/v1/centrifugodf/{id}"
+      put: "/api/v1/centrifugo/{id}"
       body: "*"
     };
   }
 
-  rpc DeleteCentrifugodf(DeleteCentrifugodfReq) returns (DeleteCentrifugodfRes) {
+  rpc DeleteCentrifugo(DeleteCentrifugoReq) returns (DeleteCentrifugoRes) {
     option (google.api.http) = {
-      delete: "/api/v1/centrifugodf/{id}"
+      delete: "/api/v1/centrifugo/{id}"
     };
   }
 
