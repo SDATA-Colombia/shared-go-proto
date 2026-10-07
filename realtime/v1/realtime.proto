@@ -1,17 +1,17 @@
 syntax = "proto3";
 
-package centrifugo.v1;
+package realtime.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-option go_package = "github.com/SDATA-Colombia/shared-go-proto/centrifugo/v1";
+option go_package = "github.com/SDATA-Colombia/shared-go-proto/realtime/v1";
 
 // -------------------------------------------------------------------
-// Centrifugo Entity message
+// Realtime Entity message
 // -------------------------------------------------------------------
 
-message CentrifugoEntity {
+message RealtimeEntity {
   string id = 1;
   string name = 2;
   string description = 3;
@@ -35,74 +35,74 @@ message CentrifugoEntity {
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
-// CreateCentrifugo
+// CreateRealtime
 // -------------------------------------------------------------------
 
-message CreateCentrifugoReq {
-  CentrifugoEntity data = 1;
+message CreateRealtimeReq {
+  RealtimeEntity data = 1;
 }
 
-message CreateCentrifugoRes {
+message CreateRealtimeRes {
   bool success = 1;
   string message = 2;
-  CentrifugoEntity data = 3;
+  RealtimeEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// GetCentrifugo
+// GetRealtime
 // -------------------------------------------------------------------
 
-message GetCentrifugoReq {
+message GetRealtimeReq {
   string id = 1;
 }
 
-message GetCentrifugoRes {
+message GetRealtimeRes {
   bool success = 1;
   string message = 2;
-  CentrifugoEntity data = 3;
+  RealtimeEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// ListCentrifugo
+// ListRealtime
 // -------------------------------------------------------------------
 
-message ListCentrifugoReq {
+message ListRealtimeReq {
   int32 page = 1;
   int32 limit = 2;
   string search = 3;
 }
 
-message ListCentrifugoRes {
+message ListRealtimeRes {
   bool success = 1;
   string message = 2;
-  repeated CentrifugoEntity data = 3;
+  repeated RealtimeEntity data = 3;
   int64 total = 4;
 }
 
 // -------------------------------------------------------------------
-// UpdateCentrifugo
+// UpdateRealtime
 // -------------------------------------------------------------------
 
-message UpdateCentrifugoReq {
+message UpdateRealtimeReq {
   string id = 1;
-  CentrifugoEntity data = 2;
+  RealtimeEntity data = 2;
 }
 
-message UpdateCentrifugoRes {
+message UpdateRealtimeRes {
   bool success = 1;
   string message = 2;
-  CentrifugoEntity data = 3;
+  RealtimeEntity data = 3;
 }
 
 // -------------------------------------------------------------------
-// DeleteCentrifugo
+// DeleteRealtime
 // -------------------------------------------------------------------
 
-message DeleteCentrifugoReq {
+message DeleteRealtimeReq {
   string id = 1;
 }
 
-message DeleteCentrifugoRes {
+message DeleteRealtimeRes {
   bool success = 1;
   string message = 2;
 }
@@ -111,37 +111,37 @@ message DeleteCentrifugoRes {
 // Service gRPC
 // -------------------------------------------------------------------
 
-service CentrifugoService {
+service RealtimeService {
 
-  rpc CreateCentrifugo(CreateCentrifugoReq) returns (CreateCentrifugoRes) {
+  rpc CreateRealtime(CreateRealtimeReq) returns (CreateRealtimeRes) {
     option (google.api.http) = {
-      post: "/api/v1/centrifugo"
+      post: "/api/v1/realtime"
       body: "*"
     };
   }
 
-  rpc GetCentrifugo(GetCentrifugoReq) returns (GetCentrifugoRes) {
+  rpc GetRealtime(GetRealtimeReq) returns (GetRealtimeRes) {
     option (google.api.http) = {
-      get: "/api/v1/centrifugo/{id}"
+      get: "/api/v1/realtime/{id}"
     };
   }
 
-  rpc ListCentrifugo(ListCentrifugoReq) returns (ListCentrifugoRes) {
+  rpc ListRealtime(ListRealtimeReq) returns (ListRealtimeRes) {
     option (google.api.http) = {
-      get: "/api/v1/centrifugo"
+      get: "/api/v1/realtime"
     };
   }
 
-  rpc UpdateCentrifugo(UpdateCentrifugoReq) returns (UpdateCentrifugoRes) {
+  rpc UpdateRealtime(UpdateRealtimeReq) returns (UpdateRealtimeRes) {
     option (google.api.http) = {
-      put: "/api/v1/centrifugo/{id}"
+      put: "/api/v1/realtime/{id}"
       body: "*"
     };
   }
 
-  rpc DeleteCentrifugo(DeleteCentrifugoReq) returns (DeleteCentrifugoRes) {
+  rpc DeleteRealtime(DeleteRealtimeReq) returns (DeleteRealtimeRes) {
     option (google.api.http) = {
-      delete: "/api/v1/centrifugo/{id}"
+      delete: "/api/v1/realtime/{id}"
     };
   }
 
