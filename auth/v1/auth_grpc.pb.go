@@ -23,6 +23,7 @@ const (
 	AuthService_GetAuth_FullMethodName            = "/auth.v1.AuthService/GetAuth"
 	AuthService_DeleteAuthIdSujeto_FullMethodName = "/auth.v1.AuthService/DeleteAuthIdSujeto"
 	AuthService_ListAuth_FullMethodName           = "/auth.v1.AuthService/ListAuth"
+	AuthService_GetSession_FullMethodName         = "/auth.v1.AuthService/GetSession"
 	AuthService_Login_FullMethodName              = "/auth.v1.AuthService/Login"
 	AuthService_ChangePassword_FullMethodName     = "/auth.v1.AuthService/ChangePassword"
 	AuthService_ResetPassword_FullMethodName      = "/auth.v1.AuthService/ResetPassword"
@@ -38,6 +39,7 @@ type AuthServiceClient interface {
 	GetAuth(ctx context.Context, in *GetAuthReq, opts ...grpc.CallOption) (*GetAuthRes, error)
 	DeleteAuthIdSujeto(ctx context.Context, in *DeleteAuthIdSujetoReq, opts ...grpc.CallOption) (*DeleteAuthIdSujetoRes, error)
 	ListAuth(ctx context.Context, in *ListAuthReq, opts ...grpc.CallOption) (*ListAuthRes, error)
+	GetSession(ctx context.Context, in *GetSessionReq, opts ...grpc.CallOption) (*GetSessionRes, error)
 	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginRes, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordReq, opts ...grpc.CallOption) (*ChangePasswordRes, error)
 	ResetPassword(ctx context.Context, in *ResetPasswordReq, opts ...grpc.CallOption) (*ResetPasswordRes, error)
@@ -87,6 +89,16 @@ func (c *authServiceClient) ListAuth(ctx context.Context, in *ListAuthReq, opts 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListAuthRes)
 	err := c.cc.Invoke(ctx, AuthService_ListAuth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetSession(ctx context.Context, in *GetSessionReq, opts ...grpc.CallOption) (*GetSessionRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSessionRes)
+	err := c.cc.Invoke(ctx, AuthService_GetSession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -151,6 +163,7 @@ type AuthServiceServer interface {
 	GetAuth(context.Context, *GetAuthReq) (*GetAuthRes, error)
 	DeleteAuthIdSujeto(context.Context, *DeleteAuthIdSujetoReq) (*DeleteAuthIdSujetoRes, error)
 	ListAuth(context.Context, *ListAuthReq) (*ListAuthRes, error)
+	GetSession(context.Context, *GetSessionReq) (*GetSessionRes, error)
 	Login(context.Context, *LoginReq) (*LoginRes, error)
 	ChangePassword(context.Context, *ChangePasswordReq) (*ChangePasswordRes, error)
 	ResetPassword(context.Context, *ResetPasswordReq) (*ResetPasswordRes, error)
@@ -177,6 +190,9 @@ func (UnimplementedAuthServiceServer) DeleteAuthIdSujeto(context.Context, *Delet
 }
 func (UnimplementedAuthServiceServer) ListAuth(context.Context, *ListAuthReq) (*ListAuthRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAuth not implemented")
+}
+func (UnimplementedAuthServiceServer) GetSession(context.Context, *GetSessionReq) (*GetSessionRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSession not implemented")
 }
 func (UnimplementedAuthServiceServer) Login(context.Context, *LoginReq) (*LoginRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method Login not implemented")
@@ -282,6 +298,24 @@ func _AuthService_ListAuth_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).ListAuth(ctx, req.(*ListAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetSession(ctx, req.(*GetSessionReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -398,6 +432,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAuth",
 			Handler:    _AuthService_ListAuth_Handler,
+		},
+		{
+			MethodName: "GetSession",
+			Handler:    _AuthService_GetSession_Handler,
 		},
 		{
 			MethodName: "Login",

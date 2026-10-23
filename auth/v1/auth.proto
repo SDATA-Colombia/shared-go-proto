@@ -96,6 +96,19 @@ message ListAuthRes {
 }
 
 // -------------------------------------------------------------------
+// Session
+// -------------------------------------------------------------------
+
+message GetSessionReq {}
+
+message GetSessionRes {
+  bool authenticated = 1;
+  string id_sujeto = 2;
+  string tipo_sujeto = 3;
+  int64 access_expires_at = 4;
+}
+
+// -------------------------------------------------------------------
 // Login
 // -------------------------------------------------------------------
 
@@ -196,6 +209,16 @@ service AuthService {
   rpc ListAuth(ListAuthReq) returns (ListAuthRes) {
     option (google.api.http) = {
       get: "/api/v1/auth/admin"
+    };
+  }
+
+  // ---------------------------------------------------------------
+  // Session
+  // ---------------------------------------------------------------
+
+  rpc GetSession(GetSessionReq) returns (GetSessionRes) {
+    option (google.api.http) = {
+      get: "/api/v1/auth/admin/session"
     };
   }
 
