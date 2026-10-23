@@ -49,12 +49,12 @@ go mod tidy
 git add .
 git commit -m "Add base proto"
 
-# git tag v0.1.0 
+# git tag v0.1.33 
 # IR CAMBIANDO 
-git tag v0.1.32  (git tag -f v0.1.32) Forza al tag para apuntar al commit actual
+git tag -f v0.1.33 Forza al tag para apuntar al commit actual
 git push origin main
-git push origin v0.1.32 (git push origin v0.1.32 --force) Se sube el tag actualizado obligando al remoto a sobrescribirlo
-# git push origin v0.1.0
+git push origin v0.1.33 --force Se sube el tag actualizado obligando al remoto a sobrescribirlo
+# git push origin v0.1.33
 
 # Tabla de equivalencias: MongoDB <-> Protobuf
 
