@@ -43,6 +43,12 @@ protoc \
   --go-grpc_opt=paths=source_relative \
   admin/v1/admin.proto
 
+# Forzar a Go a ignorar el proxy y buscar directo en el repositorio git
+GOPROXY=direct GOSUMDB=off go get github.com/SDATA-Colombia/shared-go-proto@v0.1.34
+
+# Sincronizar dependencias
+go mod tidy
+
 go mod tidy
 
 # Versionar
@@ -54,7 +60,6 @@ git commit -m "Add base proto"
 git tag -f v0.1.34 Forza al tag para apuntar al commit actual
 git push origin main
 git push origin v0.1.34 --force Se sube el tag actualizado obligando al remoto a sobrescribirlo
-# git push origin v0.1.34
 
 # Tabla de equivalencias: MongoDB <-> Protobuf
 
