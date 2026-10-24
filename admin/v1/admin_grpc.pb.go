@@ -20,8 +20,8 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	AdminService_CreateAdmin_FullMethodName = "/admin.v1.AdminService/CreateAdmin"
-	AdminService_GetAdmin_FullMethodName    = "/admin.v1.AdminService/GetAdmin"
 	AdminService_GetAdminMe_FullMethodName  = "/admin.v1.AdminService/GetAdminMe"
+	AdminService_GetAdmin_FullMethodName    = "/admin.v1.AdminService/GetAdmin"
 	AdminService_ListAdmin_FullMethodName   = "/admin.v1.AdminService/ListAdmin"
 	AdminService_UpdateAdmin_FullMethodName = "/admin.v1.AdminService/UpdateAdmin"
 	AdminService_DeleteAdmin_FullMethodName = "/admin.v1.AdminService/DeleteAdmin"
@@ -32,8 +32,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AdminServiceClient interface {
 	CreateAdmin(ctx context.Context, in *CreateAdminReq, opts ...grpc.CallOption) (*CreateAdminRes, error)
-	GetAdmin(ctx context.Context, in *GetAdminReq, opts ...grpc.CallOption) (*GetAdminRes, error)
 	GetAdminMe(ctx context.Context, in *GetAdminMeReq, opts ...grpc.CallOption) (*GetAdminRes, error)
+	GetAdmin(ctx context.Context, in *GetAdminReq, opts ...grpc.CallOption) (*GetAdminRes, error)
 	ListAdmin(ctx context.Context, in *ListAdminReq, opts ...grpc.CallOption) (*ListAdminRes, error)
 	UpdateAdmin(ctx context.Context, in *UpdateAdminReq, opts ...grpc.CallOption) (*UpdateAdminRes, error)
 	DeleteAdmin(ctx context.Context, in *DeleteAdminReq, opts ...grpc.CallOption) (*DeleteAdminRes, error)
@@ -57,20 +57,20 @@ func (c *adminServiceClient) CreateAdmin(ctx context.Context, in *CreateAdminReq
 	return out, nil
 }
 
-func (c *adminServiceClient) GetAdmin(ctx context.Context, in *GetAdminReq, opts ...grpc.CallOption) (*GetAdminRes, error) {
+func (c *adminServiceClient) GetAdminMe(ctx context.Context, in *GetAdminMeReq, opts ...grpc.CallOption) (*GetAdminRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAdminRes)
-	err := c.cc.Invoke(ctx, AdminService_GetAdmin_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AdminService_GetAdminMe_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *adminServiceClient) GetAdminMe(ctx context.Context, in *GetAdminMeReq, opts ...grpc.CallOption) (*GetAdminRes, error) {
+func (c *adminServiceClient) GetAdmin(ctx context.Context, in *GetAdminReq, opts ...grpc.CallOption) (*GetAdminRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAdminRes)
-	err := c.cc.Invoke(ctx, AdminService_GetAdminMe_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AdminService_GetAdmin_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -112,8 +112,8 @@ func (c *adminServiceClient) DeleteAdmin(ctx context.Context, in *DeleteAdminReq
 // for forward compatibility.
 type AdminServiceServer interface {
 	CreateAdmin(context.Context, *CreateAdminReq) (*CreateAdminRes, error)
-	GetAdmin(context.Context, *GetAdminReq) (*GetAdminRes, error)
 	GetAdminMe(context.Context, *GetAdminMeReq) (*GetAdminRes, error)
+	GetAdmin(context.Context, *GetAdminReq) (*GetAdminRes, error)
 	ListAdmin(context.Context, *ListAdminReq) (*ListAdminRes, error)
 	UpdateAdmin(context.Context, *UpdateAdminReq) (*UpdateAdminRes, error)
 	DeleteAdmin(context.Context, *DeleteAdminReq) (*DeleteAdminRes, error)
@@ -130,11 +130,11 @@ type UnimplementedAdminServiceServer struct{}
 func (UnimplementedAdminServiceServer) CreateAdmin(context.Context, *CreateAdminReq) (*CreateAdminRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateAdmin not implemented")
 }
-func (UnimplementedAdminServiceServer) GetAdmin(context.Context, *GetAdminReq) (*GetAdminRes, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAdmin not implemented")
-}
 func (UnimplementedAdminServiceServer) GetAdminMe(context.Context, *GetAdminMeReq) (*GetAdminRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAdminMe not implemented")
+}
+func (UnimplementedAdminServiceServer) GetAdmin(context.Context, *GetAdminReq) (*GetAdminRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAdmin not implemented")
 }
 func (UnimplementedAdminServiceServer) ListAdmin(context.Context, *ListAdminReq) (*ListAdminRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAdmin not implemented")
@@ -184,24 +184,6 @@ func _AdminService_CreateAdmin_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AdminService_GetAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAdminReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AdminServiceServer).GetAdmin(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AdminService_GetAdmin_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServiceServer).GetAdmin(ctx, req.(*GetAdminReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _AdminService_GetAdminMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAdminMeReq)
 	if err := dec(in); err != nil {
@@ -216,6 +198,24 @@ func _AdminService_GetAdminMe_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AdminServiceServer).GetAdminMe(ctx, req.(*GetAdminMeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdminService_GetAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAdminReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServiceServer).GetAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminService_GetAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServiceServer).GetAdmin(ctx, req.(*GetAdminReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -286,12 +286,12 @@ var AdminService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AdminService_CreateAdmin_Handler,
 		},
 		{
-			MethodName: "GetAdmin",
-			Handler:    _AdminService_GetAdmin_Handler,
-		},
-		{
 			MethodName: "GetAdminMe",
 			Handler:    _AdminService_GetAdminMe_Handler,
+		},
+		{
+			MethodName: "GetAdmin",
+			Handler:    _AdminService_GetAdmin_Handler,
 		},
 		{
 			MethodName: "ListAdmin",

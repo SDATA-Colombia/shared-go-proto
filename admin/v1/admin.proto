@@ -135,15 +135,15 @@ service AdminService {
     };
   }
 
-  rpc GetAdmin(GetAdminReq) returns (GetAdminRes) {
+  rpc GetAdminMe(GetAdminMeReq) returns (GetAdminRes) {
     option (google.api.http) = {
-      get: "/api/v1/admin/{id}"
+      get: "/api/v1/admin/profile/me"
     };
   }
 
-  rpc GetAdminMe(GetAdminMeReq) returns (GetAdminRes) {
+  rpc GetAdmin(GetAdminReq) returns (GetAdminRes) {
     option (google.api.http) = {
-      get: "/api/v1/admin/me"
+      get: "/api/v1/admin/{id}"
     };
   }
 
