@@ -120,9 +120,8 @@ message LoginReq {
 message LoginRes {
   bool success = 1;
   string message = 2;
-  string tipo_token = 5;
-  string id_sujeto = 6;
-  int64 expira_en = 7;
+  string tipo_token = 3;
+  int64 expira_en = 4;
 }
 
 // -------------------------------------------------------------------
@@ -168,8 +167,8 @@ message RefreshTokenReq {
 message RefreshTokenRes {
   bool success = 1;
   string message = 2;
-  string tipo_token = 5;
-  int64 expira_en = 6;
+  string tipo_token = 3;
+  int64 expira_en = 4;
 }
 
 // -------------------------------------------------------------------
