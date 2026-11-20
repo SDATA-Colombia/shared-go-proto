@@ -60,8 +60,8 @@ go mod tidy
 git add .
 git commit -m "Add base proto"
 
-# git tag v0.1.40 
-# IR CAMBIANDO 
+# git tag v0.1.40
+# IR CAMBIANDO
 git tag -f v0.1.40 Forza al tag para apuntar al commit actual
 git push origin main
 git push origin v0.1.40 --force Se sube el tag actualizado obligando al remoto a sobrescribirlo
