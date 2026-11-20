@@ -5,8 +5,14 @@ grpcurl -version
 sudo apt update
 sudo apt install -y golang-go
 
+# Instalar protobuf
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.12
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+export PATH="$(go env GOPATH)/bin:$PATH"
+
 # Verificar versión:
 protoc --version
+protoc-gen-go --version
 protoc-gen-go-grpc --version
 
 # Instalar protoc-gen-go y protoc-gen-go-grpc y configurar path:
