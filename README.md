@@ -1,4 +1,9 @@
-# shared-go-proto
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+export PATH="$(go env GOPATH)/bin:$PATH"
+grpcurl -version
+
+sudo apt update
+sudo apt install -y golang-go
 
 # Verificar versión:
 protoc --version
